@@ -2,7 +2,6 @@
 
 var User = require('../models/user');
 var bcrypt = require('bcrypt-nodejs');
-var moment = require('moment');
 var jwt = require('../services/jwt');
 
 function loginUser(req, res) {
@@ -42,16 +41,13 @@ function saveUser(req, res) {
 	var params = req.body;
 	var user = new User();
 
-	if (params.name && params.middleName && params.lastName &&
-		params.nick && params.email && params.password){
+	if (params.name && params.nick && params.email && params.password){
 
 		user.name = params.name;
-		user.middleName = params.middleName;
-		user.lastName = params.lastName
 		user.email = params.email;
 		user.nick = params.nick;
-		user.image = null;
-		user.created_at = moment().unix();
+		user.image = params.image;
+		user.created_at = Date.now();
 
 		//filtro para detectar y controlar la duplicidad de usuarios
 		User.find({email: user.email.toLowerCase()}).exec((err, users) => {
@@ -89,10 +85,39 @@ function publicSite(req, res) {
 	});
 }
 
+async function uploadAvatar(req, res) {
+    try {
+        if(!req.files) {
+            res.send({
+                status: false,
+                message: 'No file uploaded'
+            });
+        } else {
+            //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
+            let avatar = req.files.avatar;
+            
+            //Use the mv() method to place the file in upload directory (i.e. "uploads")
+            avatar.mv('./uploads/' + avatar.name);
+
+            //send response
+            res.send({
+                status: true,
+                message: 'File is uploaded',
+                data: {
+                    name: avatar.name,
+                    mimetype: avatar.mimetype,
+                    size: avatar.size
+                }
+            });
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+}
 
 module.exports = {
-	home,
 	saveUser,
 	loginUser,
 	publicSite,
+	uploadAvatar
 }

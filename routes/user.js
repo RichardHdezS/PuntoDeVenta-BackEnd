@@ -8,5 +8,6 @@ var auth = require('../middlewares/authenticate');
 
 api.post('/register', UserController.saveUser);
 api.post('/login', UserController.loginUser);
+api.post('/upload-avatar', UserController.uploadAvatar);
 
 module.exports = api;

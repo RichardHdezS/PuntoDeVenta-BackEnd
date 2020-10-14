@@ -2,7 +2,21 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const morgan = require('morgan');
+const cors = require('cors');
+
 var app = express();
+
+app.use(fileUpload({
+    createParentPath: true,
+    limits: { 
+        fileSize: 2 * 1024 * 1024 * 1024 //2MB max file(s) size
+    },    
+}));
+
+app.use(cors());
+app.use(morgan('dev'));
 
 // cargar rutas
 var user_routes = require('./routes/user');

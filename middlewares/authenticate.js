@@ -1,7 +1,6 @@
 'use strict'
 
 var jwt = require('jsonwebtoken');
-var moment = require('moment');
 var secret = 'clave_secreta_taller_programacion_web_1';
 
 
