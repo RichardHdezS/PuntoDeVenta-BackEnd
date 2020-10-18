@@ -20,6 +20,7 @@ function loginUser(req, res) {
 					if (params.gettoken){
 						// generar y devolver el token
 						return res.status(200).send({
+							user: user,
 							token: jwt.createToken(user)
 						});
 					}else{
@@ -87,6 +88,7 @@ function publicSite(req, res) {
 
 async function uploadAvatar(req, res) {
     try {
+		//console.log(req.file,req.files,req.image);
         if(!req.files) {
             res.send({
                 status: false,
@@ -115,9 +117,42 @@ async function uploadAvatar(req, res) {
     }
 }
 
+function getAvatar( req, res ) {
+	
+    var	fileSystem = require('fs'),
+		path = require('path');
+	
+    if(!req.params.fileName)
+		return res.status(400).json('File name expected');
+
+	var filePath = path.join('uploads',req.params.fileName );
+	console.log(filePath);
+	var stat = fileSystem.statSync(filePath);
+	console.log(path.extname(req.params.fileName));
+	if (path.extname(req.params.fileName) == '.jpg' || path.extname(req.params.fileName) == '.jpeg') {
+		res.writeHead(200, {
+			'Content-Type': 'image/jpeg',
+			'Content-Length': stat.size
+		});
+	} else if (path.extname(req.params.fileName) == '.png') {
+		res.writeHead(200, {
+			'Content-Type': 'image/png',
+			'Content-Length': stat.size
+		});
+	} else {
+		return res.status(400).json('Only file extensions jpg, jpeg o png are accepted ');
+	}
+
+	var readStream = fileSystem.createReadStream(filePath);
+	// We replaced all the event handlers with a simple call to readStream.pipe()
+	readStream.pipe(res);
+	
+}
+
 module.exports = {
 	saveUser,
 	loginUser,
 	publicSite,
-	uploadAvatar
+	uploadAvatar,
+	getAvatar
 }
