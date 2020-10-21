@@ -6,7 +6,7 @@ var jwt = require('../services/jwt');
 
 function loginUser(req, res) {
 
-	var params = req.body;
+	var params = JSON.parse(req.body.params);
 	var email = params.email;
 	var password = params.password;
 
@@ -39,11 +39,11 @@ function loginUser(req, res) {
 }
 
 function saveUser(req, res) {
-	var params = req.body;
+	var params = JSON.parse(req.body.params);
 	var user = new User();
-
+	//console.log('Mensaje desde saveUser:',params.name);
 	if (params.name && params.nick && params.email && params.password){
-
+		//console.log('Mensaje desde saveUser2',params);
 		user.name = params.name;
 		user.email = params.email;
 		user.nick = params.nick;
