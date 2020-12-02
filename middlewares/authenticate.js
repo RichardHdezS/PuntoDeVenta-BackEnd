@@ -8,6 +8,7 @@ var secret = 'clave_secreta_taller_programacion_web_1';
 // ensureAuth es el nombre del metodo o funcion para autenticar
 exports.ensureAuth = function(req, res, next){
 	//se define el header con nombre authorization para verificar que la petición tiene cabecera
+	
 	if(!req.headers.token){
 		return res.status(403).send({message : "La peticion no tiene la cabecera de autenticación"});
 	}

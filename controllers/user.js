@@ -6,9 +6,25 @@ var jwt = require('../services/jwt');
 
 function loginUser(req, res) {
 
-	var params = JSON.parse(req.body.params);
-	var email = params.email;
-	var password = params.password;
+	//return res.status(500).send(req.body);
+	if (req.body.params){
+		var params = JSON.parse(req.body.params);
+		var email = params.email;
+		var password = params.password;
+		if (params.gettoken){
+			var gettoken = params.gettoken;
+		} else {
+			var gettoken = false;
+		}
+	} else {
+		var email = req.body.email;
+		var password = req.body.password;
+		if (req.body.gettoken){
+			var gettoken = req.body.gettoken;
+		} else {
+			var gettoken = false;
+		}
+	}
 
 	User.findOne({email: email}, (err, user) => {
 		if (err) return res.status(500).send({message : 'Error en la petición...'});
@@ -17,7 +33,7 @@ function loginUser(req, res) {
 			bcrypt.compare(password, user.password, (err, check) => {
 				if (check){	
 					//devolver datos del usuario
-					if (params.gettoken){
+					if (gettoken){
 						// generar y devolver el token
 						return res.status(200).send({
 							user: user,
