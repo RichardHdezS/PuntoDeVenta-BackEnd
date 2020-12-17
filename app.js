@@ -21,6 +21,7 @@ app.use(morgan('dev'));
 // cargar rutas
 var user_routes = require('./routes/user');
 var client_routes = require('./routes/client');
+var venta_routes = require('./routes/venta');
 
 // middlewares
 app.use(bodyParser.urlencoded({extended:false}));
@@ -38,6 +39,7 @@ app.use((req, res, next) => {
 // rutas
 app.use('/api', user_routes);
 app.use('/api', client_routes);
+app.use('/api', venta_routes);
 
 // exportar
 module.exports = app;

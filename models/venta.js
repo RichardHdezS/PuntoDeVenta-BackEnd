@@ -4,11 +4,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var VentaSchema = Schema({
-	public folio: String,
-	public fecha: {type:Date, default: Date.now},
-	public cliente: {type: Schema.Types.ObjectId, ref: 'Cliente'},
-	public total: Number,
-	public detalle: [{type: Schema.Types.ObjectId, ref: 'VentaDet'}],	
+	folio: String,
+	fecha: {type:Date, default: Date.now},
+	cliente: String,
+	total: Number,	
+	detalle: Number,
 });
 
 module.exports = mongoose.model('Venta', VentaSchema);
