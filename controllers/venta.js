@@ -62,7 +62,7 @@ function removeVenta(req, res) {
 function updateVenta(req, res) {
 	var params = JSON.parse(req.body.params);
 	var venta = new Venta();
-	console.log('Mensaje desde updateClient:',params);
+	console.log('Mensaje desde updateVenta:',params);
 	if (params){
 
         if (params.fecha){
