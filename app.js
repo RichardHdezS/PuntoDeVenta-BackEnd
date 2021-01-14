@@ -23,6 +23,7 @@ var user_routes = require('./routes/user');
 var client_routes = require('./routes/client');
 var venta_routes = require('./routes/venta');
 
+var producto_routes=require('./routes/producto');
 // middlewares
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -41,6 +42,7 @@ app.use('/api', user_routes);
 app.use('/api', client_routes);
 app.use('/api', venta_routes);
 
+app.use('/api', producto_routes);
 // exportar
 module.exports = app;
 
