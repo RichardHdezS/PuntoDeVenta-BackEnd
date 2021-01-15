@@ -1,33 +1,34 @@
 'use strict'
 
-var Venta = require('../models/venta_det');
+var DVenta = require('../models/venta_det');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../services/jwt');
 
-function insertVenta(req, res) {
+function insertDlleVenta(req, res) {
 	var params = JSON.parse(req.body.params);
-	var venta = new Venta();
-	console.log('Mensaje desde saveUser:',params.folio);
+	var Dventa = new DVenta();
+	console.log('Mensaje desde saveUser:',params.venta);
 	if (true){
 		console.log('Mensaje desde saveUser2',params);
-		venta.folio = params.folio;
-		venta.fecha = params.fecha;
-		venta.cliente = params.cliente;
-        venta.total = params.total;
+		Dventa.venta = params.venta;
+		Dventa.producto = params.producto;
+		Dventa.cantidad = params.cantidad;
+		Dventa.precio = params.precio;
+		Dventa.importe = params.importe;
 
 		//filtro para detectar y controlar la duplicidad de usuarios
-		Venta.find({folio: venta.folio}).exec((err, venti) => {
-			console.log(venti);
-			if(venti && venti.length >= 1){
+		DVenta.find({Dventa: Dventa.venta}).exec((err, dventi) => {
+			console.log('hola',dventi);
+			if(dventi && dventi.length >= 1){
 				return res.status(200).send({message: 'El folio de la venta que intenta registrar ya existe...'})
 			} else {
 				//Cifrado de contraseña y guardado de datos
-				venta.save((err, ventaStored) =>{
-						console.log(ventaStored);
-						if (err) return res.status(500).send({message : 'Error al guardar la venta...'})
+				Dventa.save((err, DventaStored) =>{
+						console.log(DventaStored);
+						if (err) return res.status(500).send({message : 'Error al guardar el detalle de la venta...'})
 
-						if (ventatStored){
-							res.status(200).send({venta : ventaStored});
+						if (DventatStored){
+							res.status(200).send({Dventa : DventaStored});
 						}else{
 							res.status(404).send({message : 'No se ha registrado la venta...'});
 						}
@@ -42,14 +43,14 @@ function insertVenta(req, res) {
 	}
 }
 
-function removeVenta(req, res) {
+function removeDlleVenta(req, res) {
 	var params = JSON.parse(req.body.params);
-	console.log('Mensaje desde removeVenta:',params.folio);
-	if (params.venta){
+	console.log('Mensaje desde removeDlleVenta:',params.venta);
+	if (params.Dventa){
 		console.log('Hola:3');
-		Venta.deleteOne({ folio: params.venta }, (err, venta ) => {
+		DVenta.deleteOne({ folio: params.Dventa }, (err, venta ) => {
 			if (err) return res.status(500).send({message: 'Error en la petición de venta...'})
-            return res.status(200).send({venta: venta, message: 'Venta eliminada...'})
+            return res.status(200).send({venta: Dventa, message: 'Venta eliminada...'})
 		});
 
     } else {
@@ -58,7 +59,7 @@ function removeVenta(req, res) {
 		});
 	}
 }
- 
+/* 
 function updateVenta(req, res) {
 	var params = JSON.parse(req.body.params);
 	var venta = new Venta();
@@ -86,31 +87,31 @@ function updateVenta(req, res) {
 		});
     }
 }
-
-function getVentas(req, res) {
+*/
+function getDlleVentas(req, res) {
 	//var params = JSON.parse(req.body.params);
 	console.log(req.body.params,'texto');
 
-	if (req.params.venta){
+	if (req.params.Dventa){
 		// Get only one
 		console.log('mensaje');
-        Venta.find({clave:req.params.venta}, ( err, venta) => {
+        DVenta.find({folio:req.params.Dventa}, ( err, Dventa) => {
             if (err) return res.status(500).send({message : 'Error en la búsqueda de la venta...'});
-            return res.status(200).send({venta : venta});
+            return res.status(200).send({Dventa : Dventa});
         });
     } else {
 		console.log('mensaje');
-        Venta.find({}, ( err, ventas) => {
+        DVenta.find({}, ( err, Dventas) => {
             if (err) return res.status(500).send({message : 'Error en la búsqueda de la venta...'});
-            return res.status(200).send({ventas : ventas});
+            return res.status(200).send({Dventas : Dventas});
         });
     }
 }
 
 
 module.exports = {
-	insertVenta,
-	removeVenta,
-	updateVenta,
-	getVentas,
+	insertDlleVenta,
+	removeDlleVenta,
+	//updateDlleVenta,
+	getDlleVentas,
 }

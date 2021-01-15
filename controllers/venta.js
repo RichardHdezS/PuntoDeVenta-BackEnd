@@ -17,7 +17,7 @@ function insertVenta(req, res) {
 
 		//filtro para detectar y controlar la duplicidad de usuarios
 		Venta.find({folio: venta.folio}).exec((err, venti) => {
-			console.log(venti);
+			console.log('Holaaaaaa',venti);
 			if(venti && venti.length >= 1){
 				return res.status(200).send({message: 'El folio de la venta que intenta registrar ya existe...'})
 			} else {
